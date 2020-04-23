@@ -16,6 +16,19 @@ app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:true}))
 app.use(passport.initialize()); 
 app.use(passport.session()); // persistent login sessions
 
+//Models
+var models = require("./models"); 
+//Sync Database
+models.sequelize.sync().then(function() { 
+    console.log('Nice! Database looks fine') 
+}).catch(function(err) { 
+    console.log(err, "Something went wrong with the Database Update!") 
+});
+
+//load passport strategies 
+require('./config/passport/passport.js')(passport, models.user);
+ 
+
 app.post('/signin', function (req, res) {
     var user_name = req.body.email;
     var password = req.body.password;
@@ -27,15 +40,17 @@ app.post('/signin', function (req, res) {
     }
 })
 
-app.get('/api/hello', (req, res) => {
-    res.send({ express: 'Hello From Express' });
+app.post('/signup', function (req, res) {
+    var user = new User();
+ 
+    user.username = req.body.username;
+    user.email = req.body.email;
+    user.setPassword(req.body.password);
+  
+  user.save().then(function(){
+    return res.json({user: user.toAuthJSON()});
+  }).catch(next);
 });
 
-app.post('/api/world', (req, res) => {
-    console.log(req.body);
-    res.send(
-        `I received your POST request. This is what you sent me: ${req.body.post}`,
-    );
-});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
