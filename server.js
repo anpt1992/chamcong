@@ -19,11 +19,14 @@ app.use(passport.session()); // persistent login sessions
 //Models
 var models = require("./models"); 
 //Sync Database
-models.sequelize.sync().then(function() { 
-    console.log('Nice! Database looks fine') 
-}).catch(function(err) { 
-    console.log(err, "Something went wrong with the Database Update!") 
-});
+// models.sequelize.sync().then(function() { 
+//     console.log('Nice! Database looks fine') 
+// }).catch(function(err) { 
+//     console.log(err, "Something went wrong with the Database Update!") 
+// });
+
+var User = models.user;
+
 
 //load passport strategies 
 require('./config/passport/passport.js')(passport, models.user);

@@ -1,12 +1,12 @@
 module.exports = function (sequelize, Sequelize) {
 
-    var User = sequelize.define('user', {
+    const User = sequelize.define('user', {
 
         id: {
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER
-        },        
+        },
         firstname: {
             type: Sequelize.STRING,
             notEmpty: true
@@ -47,7 +47,5 @@ module.exports = function (sequelize, Sequelize) {
             defaultValue: 'active'
         }
     });
-
-    return User;
-
-}
+    
+}; 
